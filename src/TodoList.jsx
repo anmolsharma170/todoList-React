@@ -1,14 +1,24 @@
+import { memo, useCallback } from "react";
 import TodolistItem from "./TodolistItem";
 
-function TodoList({listOfTodos}){
+function TodoList({listOfTodos, onDeleteTodo}){
+
+
+
+    function deleteTodo(value){
+        console.log('Delete todo with ID: ',value);
+        onDeleteTodo?.(value);
+    }
+
+    const memoDeleteTodoCallback = useCallback(deleteTodo,[onDeleteTodo]);
     return(
         <>
             <ul>
                 {listOfTodos?.map((todo)=>{
-                    return <TodolistItem key={todo.id} todo={todo}/>
+                    return <TodolistItem key={todo.value} todo={todo} onDelete={memoDeleteTodoCallback}/>
                 })}
             </ul>
         </>
     )
 }
-export default TodoList;
+export default memo(TodoList);
